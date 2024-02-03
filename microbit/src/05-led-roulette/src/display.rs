@@ -1,13 +1,13 @@
 use crate::DisplayPinsArray;
 use microbit::hal::prelude::OutputPin as _;
 
-pub fn display_px((x, y): &(i8, i8), (cols, rows): &mut DisplayPinsArray) {
+pub fn display_px((x, y): &(u8, u8), (cols, rows): &mut DisplayPinsArray) {
     rows[*x as usize].set_high().unwrap();
     cols[*y as usize].set_low().unwrap();
 }
 
 #[inline]
-pub fn undisplay_px((x, y): &(i8, i8), (cols, rows): &mut DisplayPinsArray) {
+pub fn undisplay_px((x, y): &(u8, u8), (cols, rows): &mut DisplayPinsArray) {
     rows[*x as usize].set_low().unwrap();
     cols[*y as usize].set_high().unwrap();
 }

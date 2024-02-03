@@ -50,37 +50,24 @@ pub fn game(
 /// compute the next dot position for game.
 fn dot_game_spiral(dot: &mut DotState, buttons: &ButtonState) -> Option<Players> {
     let mut result = None;
+
     update_dot_motion(dot, buttons);
     compiler_fence(core::sync::atomic::Ordering::SeqCst);
-    dot.spiral(
-        |dot| {
-            if dot.is_clockwise() {
-                dot.inc_y();
-            } else {
-                dot.dec_y();
-            }
-            dot.toggle_going_in();
-        },
-        |dot| result = Some(who_is_upper_hand(dot)),
-    );
+    dot.spiral(|dot| {
+        if dot.is_left() {
+            result = Some(Players::A)
+        } else {
+            result = Some(Players::B)
+        }
+    });
+
     result
 }
 
 /// update dot motion
-fn update_dot_motion(dot: &mut DotState, buttons: &ButtonState) {
-    match (who_is_upper_hand(dot), buttons.last_a()) {
-        (Players::A, false) | (Players::B, true) => {
-            dot.toggle_clockwise();
-            dot.toggle_going_in();
-        }
-        _ => (),
-    }
-}
-
 #[inline]
-fn who_is_upper_hand(dot: &DotState) -> Players {
-    match dot.is_clockwise() {
-        false => Players::A,
-        true => Players::B,
+fn update_dot_motion(dot: &mut DotState, buttons: &ButtonState) {
+    if let (true, true) | (false, false) = (dot.is_clockwise(), buttons.last_a()) {
+        dot.toggle_clockwise();
     }
 }

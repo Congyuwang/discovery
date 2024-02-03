@@ -46,20 +46,7 @@ pub fn idle_animation(
 
 /// movement of dot in idle state.
 fn dot_idle_spiral(dot: &mut DotState) {
-    dot.spiral(
-        |dot| {
-            if dot.is_clockwise() {
-                dot.inc_y();
-            } else {
-                dot.dec_y();
-            }
-            dot.toggle_going_in();
-        },
-        |dot| {
-            dot.toggle_clockwise();
-            dot.toggle_going_in();
-        },
-    );
+    dot.spiral(|dot| dot.toggle_clockwise());
 }
 
 /// Check start.

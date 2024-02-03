@@ -19,4 +19,9 @@ SECTIONS
   {
     *(.notes);
   } > RAM
+
+  /DISCARD/ :
+  {
+    *(.ARM.exidx .ARM.exidx.*);
+  }
 }
